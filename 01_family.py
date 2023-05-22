@@ -273,26 +273,43 @@ class Cat:
 #   спать,
 #
 # отличия от взрослых - кушает максимум 10 единиц еды,
-# степень счастья  - не меняется, всегда ==100 ;)
+# степень счастья - не меняется, всегда ==100 ;)
 
-class Child:
+class Child(Man):
 
-    def __init__(self):
-        pass
+    def __init__(self, name, house):
+        super().__init__(name, house)
+        self.fullness = 100
 
     def __str__(self):
         return super().__str__()
 
     def act(self):
-        pass
+        super().act()
+        dice = randint(1, 2)
+        if self.fullness < 10:
+            self.eat()
+        elif dice == 1:
+            self.eat()
+        elif dice == 2:
+            self.sleep()
 
     def eat(self):
-        pass
+        if self.house.food > 10:
+            cprint('{} ate'.format(self.name), color='green')
+            food = randint(5, 10)
+            self.house.food -= food
+            self.fullness += food
+        else:
+            cprint('there is not enough food in the house', color='red')
 
     def sleep(self):
-        pass
-
-# TODO после реализации второй части - отдать на проверку учителем две ветки
+        if self.fullness > 10:
+            cprint('{} slept'.format(self.name), color='green')
+            self.fullness -= 10
+        else:
+            cprint('{} is hungry'.format(self.name), color='red')
+            self.eat()
 
 
 ######################################################## Часть третья
