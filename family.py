@@ -13,14 +13,34 @@ class House:
         self.fur_coat = 0
         self.money_earned = 0
         self.food_eaten = 0
+        self.money_lost = 0
+        self.food_lost = 0
+        self.money_lost_times = 0
+        self.food_lost_times = 0
+
+    def money_incident(self):
+        lost = self.money / 2
+        self.money -= int(lost)
+        cprint('Family just has lost {} money'.format(lost), color='red')
+        self.money_lost += int(lost)
+        self.money_lost_times += 1
+
+    def food_incident(self):
+        lost = self.food / 2
+        self.food -= int(lost)
+        cprint('Family just has lost {} food'.format(lost), color='red')
+        self.food_lost += int(lost)
+        self.food_lost_times += 1
 
     def pollution(self):
         self.dirt += 5
 
     def __str__(self):
-        return 'In the house left: {} money, {} food, {} dirt, {} cat food, {} fur coat. ' \
-               '{} money earned, {} food eaten'.format(self.money, self.food, self.dirt, self.cat_food, self.fur_coat,
-                                                       self.money_earned, self.food_eaten)
+        return 'In the house left: {} money, {} food, {} dirt, {} cat food, {} fur coat.\n' \
+               '{} money earned, {} food eaten.\nThere were {} times {} money lost and {} times {} food lost'. \
+            format(self.money, self.food, self.dirt, self.cat_food, self.fur_coat,
+                   self.money_earned, self.food_eaten, self.money_lost_times, self.money_lost, self.food_lost_times,
+                   self.food_lost)
 
 
 class Man:
@@ -41,14 +61,23 @@ class Man:
             self.happiness -= 10
             cprint('it is dirty in the house', color='red')
 
+    def buy_cat_food(self):
+        if self.house.money > 30:
+            shop = randint(20, 30)
+            self.house.cat_food += shop
+            self.house.money -= shop
+            cprint('{} bought cat food'.format(self.name), color='yellow')
+        else:
+            cprint('there is not enough money in the house', color='red')
+
     def pet_the_cat(self):
         if self.fullness > 20:
             cprint('{} petted the cat'.format(self.name), color='blue')
             self.happiness += 5
+            self.fullness -= 10
         else:
             cprint('{} is hungry'.format(self.name), color='red')
             return
-
 
     def __str__(self):
         return 'I am {}, my happiness is {} and fullness is {}'.format(self.name, self.happiness, self.fullness)
@@ -63,13 +92,15 @@ class Husband(Man):
 
     def act(self):
         super().act()
-        dice = randint(1, 5)
+        dice = randint(1, 6)
         if self.house.money <= 30:
             self.work()
         elif self.fullness <= 20:
             self.eat()
         elif self.happiness <= 20:
             self.gaming()
+        elif self.house.cat_food <= 20:
+            super().buy_cat_food()
         else:
             if dice == 1 or 3:
                 self.work()
@@ -77,6 +108,8 @@ class Husband(Man):
                 self.eat()
             elif dice == 4:
                 super().pet_the_cat()
+            elif dice == 5:
+                super().buy_cat_food()
             else:
                 self.gaming()
 
@@ -93,10 +126,10 @@ class Husband(Man):
     def work(self):
         if self.fullness > 10 and self.happiness > 10:
             cprint('{} went to work'.format(self.name), color='grey')
-            self.house.money += 150
+            self.house.money += 400
             self.fullness -= 10
             self.happiness -= 10
-            self.house.money_earned += 150
+            self.house.money_earned += 400
         else:
             cprint('{} tired'.format(self.name), color='red')
             self.eat()
@@ -130,7 +163,7 @@ class Wife(Man):
         elif self.house.dirt >= 80:
             self.clean_house()
         elif self.house.cat_food <= 20:
-            self.buy_cat_food()
+            super().buy_cat_food()
         else:
             if dice == 1:
                 self.buy_fur_coat()
@@ -139,7 +172,7 @@ class Wife(Man):
             elif dice == 3:
                 self.clean_house()
             elif dice == 4:
-                self.buy_cat_food()
+                super().buy_cat_food()
             elif dice == 5:
                 super().pet_the_cat()
             else:
@@ -165,14 +198,6 @@ class Wife(Man):
         else:
             cprint('there is not enough money in the house', color='red')
             self.clean_house()
-
-    def buy_cat_food(self):
-        if self.house.money > 10:
-            self.house.cat_food += 10
-            cprint('{} bought cat food'.format(self.name), color='yellow')
-        else:
-            cprint('there is not enough money in the house', color='red')
-            # return
 
     def buy_fur_coat(self):
         if self.house.money > 400 and self.fullness > 20:
@@ -277,23 +302,3 @@ class Child(Man):
         else:
             cprint('{} is hungry'.format(self.name), color='red')
             self.eat()
-
-
-home = House()
-serge = Husband(name='Сережа', house=home)
-masha = Wife(name='Маша', house=home)
-kolya = Child(name='Коля', house=home)
-murzik = Cat(name='Мурзик', house=home)
-
-for day in range(365):
-    cprint('================== День {} =================='.format(day), color='red')
-    serge.act()
-    masha.act()
-    kolya.act()
-    murzik.act()
-    home.pollution()
-    cprint(serge, color='cyan')
-    cprint(masha, color='cyan')
-    cprint(kolya, color='cyan')
-    cprint(murzik, color='cyan')
-    print(home)

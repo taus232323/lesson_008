@@ -1,9 +1,11 @@
-def eat(self):
-    if self.house.food > 20:
-        meal = randint(20, 30)
-        self.house.food -= meal
-        self.fullness += meal
-        cprint('{} ate'.format(self.name), color='green')
-    else:
-        cprint('{} there is not enough food in the house'.format(self.name), color='red')
-        self.work()
+cat_names = ['Murzik', 'Tom', 'Vasya', 'Leo', 'Marta', 'Lokis', 'Ostin', 'Felix', 'Lucy', 'Elza']
+cats = []
+for cat in range(10):
+    for name in cat_names:
+        one_cat = Cat
+
+        cat_names = ['Murzik', 'Tom', 'Vasya', 'Leo', 'Marta', 'Lokis', 'Ostin', 'Felix', 'Lucy', 'Elza']
+        cats = []
+        for name in cat_names:
+            cat = Cat(house=home, name=name)
+            cats.append(cat)
