@@ -12,15 +12,15 @@ kolya = Child(name='Коля', house=home)
 cat_names = ['Murzik', 'Tom', 'Vasya', 'Leo', 'Marta', 'Lokis', 'Ostin', 'Felix', 'Lucy', 'Elza', 'Lois',
              'Meicy', 'Alta', 'Beth', 'Vikki', 'Gerta', 'Sima', 'Wendy', 'Gary', 'Lux']
 cats = []
-for i in range(2):
+for i in range(5):
     cat_name = cat_names[randint(0, len(cat_names)-1)]
     cat = Cat(house=home, name=cat_name)
     cats.append(cat)
 for day in range(365):
     cprint('================== День {} =================='.format(day), color='red')
-    if randint(0, 365) < 6:
+    if randint(0, 365) < 9:
         home.money_incident()
-    if randint(0, 365) < 6:
+    if randint(0, 365) < 9:
         home.food_incident()
     serge.act()
     masha.act()

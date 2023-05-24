@@ -19,18 +19,20 @@ class House:
         self.food_lost_times = 0
 
     def money_incident(self):
-        lost = self.money / 2
-        self.money -= int(lost)
-        cprint('Family just has lost {} money'.format(lost), color='red')
-        self.money_lost += int(lost)
-        self.money_lost_times += 1
+        if self.money > 50:
+            lost = self.money / 2
+            self.money -= int(lost)
+            cprint('Family just has lost {} money'.format(lost), color='red')
+            self.money_lost += int(lost)
+            self.money_lost_times += 1
 
     def food_incident(self):
-        lost = self.food / 2
-        self.food -= int(lost)
-        cprint('Family just has lost {} food'.format(lost), color='red')
-        self.food_lost += int(lost)
-        self.food_lost_times += 1
+        if self.food > 30:
+            lost = self.food / 2
+            self.food -= int(lost)
+            cprint('Family just has lost {} food'.format(lost), color='red')
+            self.food_lost += int(lost)
+            self.food_lost_times += 1
 
     def pollution(self):
         self.dirt += 5
